@@ -1,13 +1,12 @@
 from django.db import models
 
-
 CHOICES = (
-        ('Gray', 'Серый'),
-        ('Black', 'Чёрный'),
-        ('White', 'Белый'),
-        ('Ginger', 'Рыжий'),
-        ('Mixed', 'Смешанный'),
-    )
+    ('Gray', 'Серый'),
+    ('Black', 'Чёрный'),
+    ('White', 'Белый'),
+    ('Ginger', 'Рыжий'),
+    ('Mixed', 'Смешанный'),
+)
 
 
 class Achievement(models.Model):
@@ -30,15 +29,19 @@ class Cat(models.Model):
     color = models.CharField(max_length=16, choices=CHOICES)
     birth_year = models.IntegerField()
     owner = models.ForeignKey(
-        Owner, related_name='cats', on_delete=models.CASCADE, blank=True,
-        null=True)
-    achievements = models.ManyToManyField(Achievement, through='AchievementCat')
+        Owner,
+        related_name='cats',
+        on_delete=models.CASCADE,
+        blank=True,
+        null=True
+    )
+    achievements = models.ManyToManyField(Achievement,
+                                          through='AchievementCat')
 
     def __str__(self):
         return self.name
 
 
-# В этой модели будут связаны id котика и id его достижения
 class AchievementCat(models.Model):
     achievement = models.ForeignKey(Achievement, on_delete=models.CASCADE)
     cat = models.ForeignKey(Cat, on_delete=models.CASCADE)
